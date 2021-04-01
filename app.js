@@ -60,11 +60,10 @@ class UI {
       then(response => response.json()).
       then(data => {
         data.forEach(product => {
-          if(product.year < 2021 ){
+          if (product.year < 2021) {
             const prdct = new Product(product.title, product.price, product.year);
-          UI.addProduct(prdct);
+            UI.addProduct(prdct);
           }
-          
         })
       });
   }
@@ -75,6 +74,25 @@ class UI {
   //     mode: 'cors', // What is CORS?? https://developer.mozilla.org/es/docs/Web/HTTP/CORS 
   //   })
   // }
+
+  static sendProducts(product) {
+    let prd = JSON.stringify({
+      'id': Math.floor(Math.random() * 10000),
+      'title': product.name,
+      'price': product.price,
+      'year': product.year
+    })
+
+    console.log(typeof prd, prd)
+    const response = fetch('http://ec2-35-181-5-201.eu-west-3.compute.amazonaws.com:8080/add-product/ants', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: prd
+    });
+    // return response.json();
+  }
 }
 
 UI.fetchProducts()
@@ -87,7 +105,7 @@ document.getElementById("product-form").addEventListener("submit", e => {
 
   //Save product
   const product = new Product(name, price, year);
-
+  UI.sendProducts(product)
   UI.addProduct(product);
   UI.resetForm();
   UI.showMessage("Product added successfully", "success");
