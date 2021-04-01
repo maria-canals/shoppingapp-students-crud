@@ -59,7 +59,6 @@ class UI {
     fetch('http://ec2-35-181-5-201.eu-west-3.compute.amazonaws.com:8080/list-products/ants').
       then(response => response.json()).
       then(data => {
-        console.log(data)
         data.forEach(product => {
           const prdct = new Product(product.title || product.tirle, product.price, product.year);
           UI.addProduct(prdct);
