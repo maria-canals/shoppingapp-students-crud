@@ -1,5 +1,3 @@
-
-//Product Constructor
 class Product {
   constructor(id, name, price, year) {
     this.id = id;
@@ -13,7 +11,6 @@ class Product {
 class UI {
   //Product template
   static addProduct(product) {
-    console.log("producto: ", product)
     const productList = document.getElementById("product-list");
     const element = document.createElement("div");
     element.innerHTML = `
@@ -34,7 +31,7 @@ class UI {
   }
 
   static deleteProduct(event) {
-
+    console.log("event", event)
     event.target.closest("div.card.text-center.mb-4").remove();
 
     fetch(`http://ec2-35-181-5-201.eu-west-3.compute.amazonaws.com:8080/delete-product/ants/${event.target.id}`, {
@@ -85,13 +82,13 @@ class UI {
   // }
 
   static sendProducts(product) {
-    //console.log("producto send: ", product)
     let prd = JSON.stringify({
       'title': product.name,
       'price': product.price,
       'year': product.year
     })
 
+    console.log(typeof prd, prd)
     const response = fetch('http://ec2-35-181-5-201.eu-west-3.compute.amazonaws.com:8080/add-product/ants', {
       method: 'POST',
       headers: {
@@ -107,6 +104,7 @@ UI.fetchProducts()
 
 //DOM Events
 document.getElementById("product-form").addEventListener("submit", e => {
+  var id = ''
   const name = document.getElementById("product-name").value
   price = document.getElementById("product-price").value
   year = document.getElementById("product-year").value
@@ -115,12 +113,11 @@ document.getElementById("product-form").addEventListener("submit", e => {
   const product = new Product(id, name, price, year);
   UI.sendProducts(product)
   UI.addProduct(product);
-  //UI.resetForm();
+  UI.resetForm();
   UI.showMessage("Product added successfully", "success");
 
   e.preventDefault();
 });
-
 document.getElementById("product-name").addEventListener("input", e=> {
   if(e.target.value.length==20){
     UI.showMessage("Mucho texto", "danger");
