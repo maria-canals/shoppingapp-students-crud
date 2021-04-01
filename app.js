@@ -1,6 +1,3 @@
-// API Url
-const url = 'http://ec2-35-181-5-201.eu-west-3.compute.amazonaws.com:8080'
-const idTeam = 'test' // CHANGEME
 
 //Product Constructor
 class Product {
@@ -58,23 +55,33 @@ class UI {
     }, 2000);
   }
 
-  static retreiveAllProductsFromServer() {
-    fetch(`CHANGAME`, {
-      method: 'GET', // So, we can specify HTTP Methods here. Uh, interesting.
-      headers: { 'Content-Type': 'application/json' }, // Type of data to retrieve. 
-      mode: 'cors', // What is CORS?? https://developer.mozilla.org/es/docs/Web/HTTP/CORS 
-    })
+  static fetchProducts() {
+    fetch('http://ec2-35-181-5-201.eu-west-3.compute.amazonaws.com:8080/list-products/ants').
+      then(response => response.json()).
+      then(data => {
+        console.log(data)
+        data.forEach(product => {
+          const prdct = new Product(product.title || product.tirle, product.price, product.year);
+          UI.addProduct(prdct);
+        })
+      });
   }
+  // static retreiveAllProductsFromServer() {
+  //   fetch(`CHANGAME`, {
+  //     method: 'GET', // So, we can specify HTTP Methods here. Uh, interesting.
+  //     headers: { 'Content-Type': 'application/json' }, // Type of data to retrieve. 
+  //     mode: 'cors', // What is CORS?? https://developer.mozilla.org/es/docs/Web/HTTP/CORS 
+  //   })
+  // }
 }
 
+UI.fetchProducts()
+
 //DOM Events
-document.getElementById("product-form").addEventListener("submit",  e => {
+document.getElementById("product-form").addEventListener("submit", e => {
   const name = document.getElementById("product-name").value
   price = document.getElementById("product-price").value
   year = document.getElementById("product-year").value
-
-
-
 
   //Save product
   const product = new Product(name, price, year);
