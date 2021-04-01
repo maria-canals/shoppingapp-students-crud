@@ -60,8 +60,11 @@ class UI {
       then(response => response.json()).
       then(data => {
         data.forEach(product => {
-          const prdct = new Product(product.title || product.tirle, product.price, product.year);
+          if(product.year < 2021 ){
+            const prdct = new Product(product.title, product.price, product.year);
           UI.addProduct(prdct);
+          }
+          
         })
       });
   }
